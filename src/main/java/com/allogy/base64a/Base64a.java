@@ -156,7 +156,14 @@ public class Base64a
     }
 
 
-    private static final String PRINT_FORMAT="%16s: %20d -> %11s -> %20d";
+    private static
+    void printTestHeader()
+    {
+        System.out.println("   test name    |    decimal value     |   base64a   |    hex value");
+        System.out.println("----------------+----------------------+-------------+------------------");
+    }
+
+    private static final String PRINT_FORMAT="%15s | %20d | %11s | %16x";
 
     private static
     void test(Base64a b64a, String name, int input)
@@ -194,6 +201,8 @@ public class Base64a
         // Create a standard object with an alternate charset.
         Base64a alternate = new Base64a("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+=");
 
+        printTestHeader();
+
         // Convert 1673 to standard (qZ).
         test(standard, "small-int" , 1673);
         test(standard, "small-int" , 167300);
@@ -218,7 +227,8 @@ public class Base64a
         test(standard, "NOW_MILLI", System.currentTimeMillis());
         test(standard, "NOW_NANO", System.nanoTime());
 
-        System.out.println("\n--negative numbers--");
+        //System.out.println("\n--negative numbers--");
+
         test(standard, "neg-int" , -1673);
         test(standard, "neg-int" , -167300);
         test(standard, "neg-long", -1673l);
@@ -241,10 +251,10 @@ public class Base64a
                 + standard.decodeLong(standard.encodeLong(32442342)));
 
         // Using invalid characters throws a runtime exception.
-        // Output was out of order with ant, adding this short sleep fixes
-        // things:
-        // The problem seems to be with the way ant's output handles system.err
-        Thread.sleep(100);
+
+        // w/o a flush, stack trace output can be out of order
+        System.out.flush();
+
         try {
             // Doesn't work
             System.out.println(standard.decodeLong("_j+j%"));
