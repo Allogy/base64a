@@ -224,6 +224,7 @@ public class Base64a
         long doubleClickable=standard.decodeLong("1.3:5.7:9.1");
         test(standard, "DOUBLE_CLICK", doubleClickable);
 
+        test(standard, "NOW_SECS", System.currentTimeMillis()/1000);
         test(standard, "NOW_MILLI", System.currentTimeMillis());
         test(standard, "NOW_NANO", System.nanoTime());
 
