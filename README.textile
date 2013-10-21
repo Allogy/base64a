@@ -30,3 +30,5 @@ Example output of the main function / unit test:
 
 Related to: base62, base52, base58
 
+Derived from: https://github.com/dukky/Base62
+
