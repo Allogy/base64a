@@ -28,3 +28,5 @@ Example output of the main function / unit test:
       MIN_LONG+1: -9223372036854775807 -> 80000000001 -> -9223372036854775807
 </pre>
 
+Related to: base62, base52, base58
+

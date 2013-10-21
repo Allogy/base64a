@@ -5,6 +5,7 @@ package com.allogy.base64a;
  * character sets can be specified when constructing the object.
  *
  * Original author: Andreas Holley
+ * See: https://github.com/dukky/Base62/blob/master/base62/src/im/duk/base62/Base62.java
  *
  * User: robert
  * Date: 2013/10/21
