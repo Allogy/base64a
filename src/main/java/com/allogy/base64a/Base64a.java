@@ -17,7 +17,7 @@ public class Base64a
     public
     Base64a()
     {
-        this("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+");
+        this("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.:");
     }
 
     /**
@@ -30,7 +30,7 @@ public class Base64a
     public
     Base64a(String characters)
     {
-        if (!(characters.length() == 64))
+        if (characters.length() != 64)
         {
             throw new IllegalArgumentException("Invalid string length, must be 64.");
         }
@@ -42,8 +42,7 @@ public class Base64a
     /**
      * Encodes a 64-bit long value to a Base64a <code>String</code>.
      *
-     * @param b10
-     * the decimal value to encodeLong, must be nonnegative.
+     * @param b10 the long value to encode
      * @return the number encoded as a Base64a <code>String</code>.
      */
     public
@@ -69,8 +68,7 @@ public class Base64a
     /**
      * Encodes a 32-bit integer value to a Base64a <code>String</code>.
      *
-     * @param b10
-     * the decimal value to encodeLong, must be nonnegative.
+     * @param b10 the integer value to encode
      * @return the number encoded as a Base64a <code>String</code>.
      */
     public
@@ -198,25 +196,38 @@ public class Base64a
         // Convert 1673 to standard (qZ).
         test(standard, "small-int" , 1673);
         test(standard, "small-int" , 167300);
-        test(standard, "neg-int" , -1673);
-        test(standard, "neg-int" , -167300);
 
         test(standard, "small-long", 1673l);
         test(standard, "small-long", 167300l);
+
+        test(standard, "ZERO_INT"  , 0);
+        test(standard, "MAX_INT-1" , Integer.MAX_VALUE-1);
+        test(standard, "MAX_INT"   , Integer.MAX_VALUE);
+
+        test(standard, "ZERO_LONG" , 0l);
+        test(standard, "MAX_LONG-1", Long.MAX_VALUE-1);
+        test(standard, "MAX_LONG"  , Long.MAX_VALUE);
+
+        long fullCount=standard.decodeLong("12345678901");
+        test(standard, "FULL", fullCount);
+
+        long doubleClickable=standard.decodeLong("1.3:5.7:9.1");
+        test(standard, "DOUBLE_CLICK", doubleClickable);
+
+        test(standard, "NOW_MILLI", System.currentTimeMillis());
+        test(standard, "NOW_NANO", System.nanoTime());
+
+        System.out.println("\n--negative numbers--");
+        test(standard, "neg-int" , -1673);
+        test(standard, "neg-int" , -167300);
         test(standard, "neg-long", -1673l);
         test(standard, "neg-long", -167300l);
-
         test(standard, "MIN_INT" , Integer.MIN_VALUE);
         test(standard, "MIN_INT+1", Integer.MIN_VALUE+1);
-        test(standard, "ZERO_INT", 0);
-        test(standard, "MAX_INT-1" , Integer.MAX_VALUE-1);
-        test(standard, "MAX_INT" , Integer.MAX_VALUE);
-
         test(standard, "MIN_LONG", Long.MIN_VALUE);
         test(standard, "MIN_LONG+1", Long.MIN_VALUE+1);
-        test(standard, "ZERO_LONG", 0l);
-        test(standard, "MAX_LONG", Long.MAX_VALUE-1);
-        test(standard, "MAX_LONG", Long.MAX_VALUE);
+
+        System.out.println();
 
         // Convert 1673 to standard with the alternate character set (A9).
         System.out.println("1673 encoded with alternate charset: " + alternate.encodeLong(1673));
